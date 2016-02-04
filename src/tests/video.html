@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>@@title - QUnit tests</title>
+	<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.20.0.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="http://code.jquery.com/qunit/qunit-1.20.0.js"></script>
+<script src="http://cdn.rawgit.com/fooplugins/foojitsu/1.0.5/foojitsu.min.js"></script>
+<script src="@@file"></script>
+<script>
+	FooJitsu.vid.config({youTubeKey: '@@youtube'});
+
+	QUnit.module('FooJitsu.vid');
+	QUnit.test('Video()', function(assert){
+		var video = new FooJitsu.Video();
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, {}, 'options');
+		assert.equal(video.id, '', 'id');
+		assert.equal(video.api, '', 'api');
+		assert.equal(video.mimeType, '', 'mimeType');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, false, 'supported');
+		assert.equal(video.fetchable, false, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+	});
+	QUnit.test('Video("")', function(assert){
+		var video = new FooJitsu.Video('');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, {}, 'options');
+		assert.equal(video.id, '', 'id');
+		assert.equal(video.api, '', 'api');
+		assert.equal(video.mimeType, '', 'mimeType');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, false, 'supported');
+		assert.equal(video.fetchable, false, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+	});
+	QUnit.test('Video("https://s3.amazonaws.com/fooplugins/rvs/oceans-clip.webm")', function(assert){
+		var video = new FooJitsu.Video('https://s3.amazonaws.com/fooplugins/rvs/oceans-clip.webm');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, 'oceans-clip.webm', 'id');
+		assert.equal(video.mimeType, 'video/webm', 'mimeType');
+		assert.equal(video.api, '', 'api');
+		assert.equal(video.custom, true, 'custom');
+		assert.equal(video.fetchable, false, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(false, 'custom videos cannot be fetched');
+			done();
+		}, function(err){
+			assert.ok(true, 'custom videos cannot be fetched');
+			assert.ok(err instanceof Error, 'err instance');
+			assert.equal(err.message, 'No additional information can be retrieved for this video.', 'err.message');
+			assert.equal(video.fetched, false, 'fetched');
+			assert.equal(video.title, '', 'title');
+			assert.equal(video.credits, '', 'credits');
+			assert.equal(video.thumbSmall, '', 'thumbSmall');
+			assert.equal(video.thumbLarge, '', 'thumbLarge');
+			done();
+		});
+	});
+	QUnit.test('Video("https://s3.amazonaws.com/fooplugins/rvs/oceans-clip.mp4")', function(assert){
+		var video = new FooJitsu.Video('https://s3.amazonaws.com/fooplugins/rvs/oceans-clip.mp4');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, 'oceans-clip.mp4', 'id');
+		assert.equal(video.mimeType, 'video/mp4', 'mimeType');
+		assert.equal(video.api, '', 'api');
+		assert.equal(video.custom, true, 'custom');
+		assert.equal(video.fetchable, false, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(false, 'custom videos cannot be fetched');
+			done();
+		}, function(err){
+			assert.ok(true, 'custom videos cannot be fetched');
+			assert.ok(err instanceof Error, 'err instance');
+			assert.equal(err.message, 'No additional information can be retrieved for this video.', 'err.message');
+			assert.equal(video.fetched, false, 'fetched');
+			assert.equal(video.title, '', 'title');
+			assert.equal(video.credits, '', 'credits');
+			assert.equal(video.thumbSmall, '', 'thumbSmall');
+			assert.equal(video.thumbLarge, '', 'thumbLarge');
+			done();
+		});
+	});
+	QUnit.test('Video("https://s3.amazonaws.com/fooplugins/rvs/oceans-clip.ogv")', function(assert){
+		var video = new FooJitsu.Video('https://s3.amazonaws.com/fooplugins/rvs/oceans-clip.ogv');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, 'oceans-clip.ogv', 'id');
+		assert.equal(video.mimeType, 'video/ogg', 'mimeType');
+		assert.equal(video.api, '', 'api');
+		assert.equal(video.custom, true, 'custom');
+		assert.equal(video.fetchable, false, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(false, 'custom videos cannot be fetched');
+			done();
+		}, function(err){
+			assert.ok(true, 'custom videos cannot be fetched');
+			assert.ok(err instanceof Error, 'err instance');
+			assert.equal(err.message, 'No additional information can be retrieved for this video.', 'err.message');
+			assert.equal(video.fetched, false, 'fetched');
+			assert.equal(video.title, '', 'title');
+			assert.equal(video.credits, '', 'credits');
+			assert.equal(video.thumbSmall, '', 'thumbSmall');
+			assert.equal(video.thumbLarge, '', 'thumbLarge');
+			done();
+		});
+	});
+	QUnit.test('Video("https://youtu.be/KWZGAExj-es")', function(assert){
+		var video = new FooJitsu.Video('https://youtu.be/KWZGAExj-es');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, 'KWZGAExj-es', 'id');
+		assert.equal(video.mimeType, 'video/youtube', 'mimeType');
+		assert.equal(video.api, 'https://www.googleapis.com/youtube/v3/videos?id=KWZGAExj-es&fields=items(snippet(title,description,channelTitle,thumbnails))&part=snippet&key=AIzaSyBMT07ftYs1dGnguTdI8I_fXazRyrnZcEA', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'youtube videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, 'Sia - Elastic Heart feat. Shia LaBeouf & Maddie Ziegler (Official Video)', 'title');
+			assert.equal(video.credits, 'SiaVEVO', 'credits');
+			assert.equal(video.thumbSmall, 'https://i.ytimg.com/vi/KWZGAExj-es/default.jpg', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://i.ytimg.com/vi/KWZGAExj-es/maxresdefault.jpg', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'youtube videos should be fetched');
+			console.log('Video("https://youtu.be/KWZGAExj-es"): ', err);
+			done();
+		});
+	});
+	QUnit.test('Video("https://www.youtube.com/watch?v=YqeW9_5kURI")', function(assert){
+		var video = new FooJitsu.Video('https://www.youtube.com/watch?v=YqeW9_5kURI');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, 'YqeW9_5kURI', 'id');
+		assert.equal(video.mimeType, 'video/youtube', 'mimeType');
+		assert.equal(video.api, 'https://www.googleapis.com/youtube/v3/videos?id=YqeW9_5kURI&fields=items(snippet(title,description,channelTitle,thumbnails))&part=snippet&key=AIzaSyBMT07ftYs1dGnguTdI8I_fXazRyrnZcEA', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'youtube videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, 'Major Lazer & DJ Snake - Lean On (feat. MØ) (Official Music Video)', 'title');
+			assert.equal(video.credits, 'majorlazer', 'credits');
+			assert.equal(video.thumbSmall, 'https://i.ytimg.com/vi/YqeW9_5kURI/default.jpg', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://i.ytimg.com/vi/YqeW9_5kURI/maxresdefault.jpg', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'youtube videos should be fetched');
+			console.log('Video("https://www.youtube.com/watch?v=YqeW9_5kURI"): ', err);
+			done();
+		});
+	});
+	QUnit.test('Video("https://www.youtube.com/embed/09R8_2nJtjg")', function(assert){
+		var video = new FooJitsu.Video('https://www.youtube.com/embed/09R8_2nJtjg');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, '09R8_2nJtjg', 'id');
+		assert.equal(video.mimeType, 'video/youtube', 'mimeType');
+		assert.equal(video.api, 'https://www.googleapis.com/youtube/v3/videos?id=09R8_2nJtjg&fields=items(snippet(title,description,channelTitle,thumbnails))&part=snippet&key=AIzaSyBMT07ftYs1dGnguTdI8I_fXazRyrnZcEA', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'youtube videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, 'Maroon 5 - Sugar', 'title');
+			assert.equal(video.credits, 'Maroon5VEVO', 'credits');
+			assert.equal(video.thumbSmall, 'https://i.ytimg.com/vi/09R8_2nJtjg/default.jpg', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://i.ytimg.com/vi/09R8_2nJtjg/maxresdefault.jpg', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'youtube videos should be fetched');
+			console.log('Video("https://www.youtube.com/embed/09R8_2nJtjg"): ', err);
+			done();
+		});
+	});
+	QUnit.test('Video("https://vimeo.com/132038125")', function(assert){
+		var video = new FooJitsu.Video('https://vimeo.com/132038125');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, '132038125', 'id');
+		assert.equal(video.mimeType, 'video/vimeo', 'mimeType');
+		assert.equal(video.api, 'https://vimeo.com/api/v2/video/132038125.json', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'vimeo videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, 'Loving Lanka', 'title');
+			assert.equal(video.credits, 'Sebastian Linda', 'credits');
+			assert.equal(video.thumbSmall, 'https://i.vimeocdn.com/video/524568939_100x75.jpg', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://i.vimeocdn.com/video/524568939_640.jpg', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'vimeo videos should be fetched');
+			console.log('Video("https://vimeo.com/132038125"): ', err);
+			done();
+		});
+	});
+	QUnit.test('Video("https://vimeo.com/channels/480431/140311923")', function(assert){
+		var video = new FooJitsu.Video('https://vimeo.com/channels/480431/140311923');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, '140311923', 'id');
+		assert.equal(video.mimeType, 'video/vimeo', 'mimeType');
+		assert.equal(video.api, 'https://vimeo.com/api/v2/video/140311923.json', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'vimeo videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, 'Paris Day & Night', 'title');
+			assert.equal(video.credits, 'Teeter-Totter-Tam', 'credits');
+			assert.equal(video.thumbSmall, 'https://i.vimeocdn.com/video/536622382_100x75.jpg', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://i.vimeocdn.com/video/536622382_640.jpg', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'vimeo videos should be fetched');
+			console.log('Video("https://vimeo.com/channels/480431/140311923"): ', err);
+			done();
+		});
+	});
+	QUnit.test('Video("https://vimeo.com/album/3573473/video/124194551")', function(assert){
+		var video = new FooJitsu.Video('https://vimeo.com/album/3573473/video/124194551');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, '124194551', 'id');
+		assert.equal(video.mimeType, 'video/vimeo', 'mimeType');
+		assert.equal(video.api, 'https://vimeo.com/api/v2/video/124194551.json', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'vimeo videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, 'Show Me China', 'title');
+			assert.equal(video.credits, 'Chris Arnold', 'credits');
+			assert.equal(video.thumbSmall, 'https://i.vimeocdn.com/video/513825199_100x75.jpg', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://i.vimeocdn.com/video/513825199_640.jpg', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'vimeo videos should be fetched');
+			console.log('Video("https://vimeo.com/album/3573473/video/124194551"): ', err);
+			done();
+		});
+	});
+	QUnit.test('Video("https://player.vimeo.com/video/140125209")', function(assert){
+		var video = new FooJitsu.Video('https://player.vimeo.com/video/140125209');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, '140125209', 'id');
+		assert.equal(video.mimeType, 'video/vimeo', 'mimeType');
+		assert.equal(video.api, 'https://vimeo.com/api/v2/video/140125209.json', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'vimeo videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, 'Beauty -Florence-', 'title');
+			assert.equal(video.credits, "Gianluca D'Elia", 'credits');
+			assert.equal(video.thumbSmall, 'https://i.vimeocdn.com/video/536349547_100x75.jpg', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://i.vimeocdn.com/video/536349547_640.jpg', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'vimeo videos should be fetched');
+			console.log('Video("https://player.vimeo.com/video/140125209"): ', err);
+			done();
+		});
+	});
+	QUnit.test('Video("https://home.wistia.com/medias/e4a27b971d")', function(assert){
+		var video = new FooJitsu.Video('https://home.wistia.com/medias/e4a27b971d');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, 'e4a27b971d', 'id');
+		assert.equal(video.mimeType, 'video/wistia', 'mimeType');
+		assert.equal(video.api, 'https://fast.wistia.net/oembed.json?url=https://home.wistia.com/medias/e4a27b971d', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'wistia videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, 'Brendan - Make It Clap', 'title');
+			assert.equal(video.credits, 'Wistia, Inc.', 'credits');
+			assert.equal(video.thumbSmall, 'https://embed-ssl.wistia.com/deliveries/2d2c14e15face1e0cc7aac98ebd5b6f040b950b5.jpg?image_crop_resized=100x60', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://embed-ssl.wistia.com/deliveries/2d2c14e15face1e0cc7aac98ebd5b6f040b950b5.jpg?image_crop_resized=800x480', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'wistia videos should be fetched');
+			console.log('Video("https://home.wistia.com/medias/e4a27b971d"): ', err);
+			done();
+		});
+	});
+	QUnit.test('Video("https://fast.wistia.net/embed/iframe/g5pnf59ala")', function(assert){
+		var video = new FooJitsu.Video('https://fast.wistia.net/embed/iframe/g5pnf59ala');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, 'g5pnf59ala', 'id');
+		assert.equal(video.mimeType, 'video/wistia', 'mimeType');
+		assert.equal(video.api, 'https://fast.wistia.net/oembed.json?url=https://fast.wistia.net/embed/iframe/g5pnf59ala', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'wistia videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, 'Dan Mills - Young and Free', 'title');
+			assert.equal(video.credits, 'Wistia, Inc.', 'credits');
+			assert.equal(video.thumbSmall, 'https://embed-ssl.wistia.com/deliveries/963ecb7ea4e5483d1568d0b526e2cf4cbffa5e5a.jpg?image_crop_resized=100x60', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://embed-ssl.wistia.com/deliveries/963ecb7ea4e5483d1568d0b526e2cf4cbffa5e5a.jpg?image_crop_resized=800x480', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'wistia videos should be fetched');
+			console.log('Video("https://fast.wistia.net/embed/iframe/g5pnf59ala"): ', err);
+			done();
+		});
+	});
+	QUnit.test('Video("http://dai.ly/x2ioxg8")', function(assert){
+		var video = new FooJitsu.Video('http://dai.ly/x2ioxg8');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, 'x2ioxg8', 'id');
+		assert.equal(video.mimeType, 'video/daily', 'mimeType');
+		assert.equal(video.api, 'https://www.dailymotion.com/services/oembed?url=https://dai.ly/x2ioxg8', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'dailymotion videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, "Drama B - Every Day's A Good Day [Official Video]", 'title');
+			assert.equal(video.credits, 'YT Media Network', 'credits');
+			assert.equal(video.thumbSmall, 'https://s1-ssl.dmcdn.net/JPSM3/x120-H8k.jpg', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://s1-ssl.dmcdn.net/JPSM3/x120-H8k.jpg', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'dailymotion videos should be fetched');
+			console.log('Video("http://dai.ly/x2ioxg8"): ', err);
+			done();
+		});
+	});
+	QUnit.test('Video("http://www.dailymotion.com/video/x2yjjhu_deep-danny-leon-gris-feat-astghik-safaryan-today-official-music-video_music")', function(assert){
+		var video = new FooJitsu.Video('http://www.dailymotion.com/video/x2yjjhu_deep-danny-leon-gris-feat-astghik-safaryan-today-official-music-video_music');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, 'x2yjjhu', 'id');
+		assert.equal(video.mimeType, 'video/daily', 'mimeType');
+		assert.equal(video.api, 'https://www.dailymotion.com/services/oembed?url=https://dai.ly/x2yjjhu', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'dailymotion videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, "Deep Danny & Leon Gris feat. Astghik Safaryan - Today (Official Music Video)", 'title');
+			assert.equal(video.credits, 'YT Media Network', 'credits');
+			assert.equal(video.thumbSmall, 'https://s2-ssl.dmcdn.net/MWyr3/x240-obT.jpg', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://s2-ssl.dmcdn.net/MWyr3/x240-obT.jpg', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'dailymotion videos should be fetched');
+			console.log('Video("http://www.dailymotion.com/video/x2yjjhu_deep-danny-leon-gris-feat-astghik-safaryan-today-official-music-video_music"): ', err);
+			done();
+		});
+	});
+	QUnit.test('Video("//www.dailymotion.com/embed/video/x2ioxee")', function(assert){
+		var video = new FooJitsu.Video('//www.dailymotion.com/embed/video/x2ioxee');
+		assert.ok(video instanceof FooJitsu.Video, 'instance returned');
+		assert.deepEqual(video.options, FooJitsu.vid.defaults, 'options');
+		assert.equal(video.id, 'x2ioxee', 'id');
+		assert.equal(video.mimeType, 'video/daily', 'mimeType');
+		assert.equal(video.api, 'https://www.dailymotion.com/services/oembed?url=https://dai.ly/x2ioxee', 'api');
+		assert.equal(video.custom, false, 'custom');
+		assert.equal(video.supported, true, 'supported');
+		assert.equal(video.fetchable, true, 'fetchable');
+		assert.equal(video.fetched, false, 'fetched');
+		assert.equal(video.title, '', 'title');
+		assert.equal(video.credits, '', 'credits');
+		assert.equal(video.thumbSmall, '', 'thumbSmall');
+		assert.equal(video.thumbLarge, '', 'thumbLarge');
+		var done = assert.async();
+		video.fetch().then(function(){
+			assert.ok(true, 'dailymotion videos should be fetched');
+			assert.equal(video.fetched, true, 'fetched');
+			assert.equal(video.title, "Drama B - DREAMS (Official Music Video) - Jee Juh Contest  1st Place WINNER", 'title');
+			assert.equal(video.credits, 'YT Media Network', 'credits');
+			assert.equal(video.thumbSmall, 'https://s1-ssl.dmcdn.net/JPSYa/x240-_GY.jpg', 'thumbSmall');
+			assert.equal(video.thumbLarge, 'https://s1-ssl.dmcdn.net/JPSYa/x240-_GY.jpg', 'thumbLarge');
+			done();
+		}, function(err){
+			assert.ok(false, 'dailymotion videos should be fetched');
+			console.log('Video("//www.dailymotion.com/embed/video/x2ioxee"): ', err);
+			done();
+		});
+	});
+</script>
+</body>
+</html>
